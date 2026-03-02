@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>LearnPy Login</title>
+<style>
+body{
+  font-family:Arial;
+  background:#0f172a;
+  color:white;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height:100vh;
+}
+.box{
+  background:#1e293b;
+  padding:30px;
+  border-radius:10px;
+  width:300px;
+  text-align:center;
+}
+input{
+  width:100%;
+  padding:10px;
+  margin:10px 0;
+  border:none;
+  border-radius:5px;
+}
+button{
+  width:100%;
+  padding:10px;
+  background:#3b82f6;
+  border:none;
+  color:white;
+  border-radius:5px;
+  cursor:pointer;
+}
+span{
+  color:#38bdf8;
+  cursor:pointer;
+}
+</style>
+</head>
+<body>
+
+<div class="box">
+<h1>LearnPy</h1>
+
+<div id="login">
+<h3>Login</h3>
+<input type="email" id="email" placeholder="Email">
+<input type="password" id="password" placeholder="Password">
+<button onclick="login()">Login</button>
+<p>Don't have Account? <span onclick="showRegister()">Register</span></p>
+</div>
+
+<div id="register" style="display:none;">
+<h3>Register</h3>
+<input type="email" id="remail" placeholder="Email">
+<input type="password" id="rpassword" placeholder="Password">
+<button onclick="register()">Register</button>
+<p>Already have Account? <span onclick="showLogin()">Login</span></p>
+</div>
+
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } 
+from "https://www.gstatic.com/firebasejs/12.10.0/firebase-auth.js";
+
+const firebaseConfig = {
+  apiKey: "YOUR_API_KEY",
+  authDomain: "learnpy-f832a.firebaseapp.com",
+  projectId: "learnpy-f832a",
+  storageBucket: "learnpy-f832a.firebasestorage.app",
+  messagingSenderId: "495153906487",
+  appId: "1:495153906487:web:1fa31590a632b7244390b2"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+
+window.register = function(){
+  createUserWithEmailAndPassword(auth,
+  document.getElementById("remail").value,
+  document.getElementById("rpassword").value)
+  .then(()=>window.location="index.html")
+  .catch(e=>alert(e.message));
+}
+
+window.login = function(){
+  signInWithEmailAndPassword(auth,
+  document.getElementById("email").value,
+  document.getElementById("password").value)
+  .then(()=>window.location="index.html")
+  .catch(e=>alert(e.message));
+}
+
+window.showRegister=()=>{login.style.display="none";register.style.display="block";}
+window.showLogin=()=>{register.style.display="none";login.style.display="block";}
+</script>
+
+</body>
+</html>
