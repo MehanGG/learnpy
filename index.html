@@ -1,283 +1,118 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>LearnPy Dashboard</title>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+<title>PythonMaster</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif}
-body{
-  background:linear-gradient(135deg,#0f172a,#1e293b);
-  color:white;
-  display:flex;
-}
+*{margin:0;padding:0;box-sizing:border-box;font-family:Poppins}
+body{display:flex;background:#0f172a;color:white;height:100vh}
 .sidebar{
-  width:250px;
-  background:rgba(255,255,255,0.05);
-  backdrop-filter:blur(10px);
-  padding:20px;
-  height:100vh;
-  overflow-y:auto;
+width:260px;
+background:#111827;
+padding:20px;
+overflow:auto;
 }
-.sidebar h2{
-  margin-bottom:20px;
+.sidebar h2{margin-bottom:20px}
+.sidebar button{
+width:100%;
+padding:10px;
+margin:5px 0;
+background:#1f2937;
+border:none;
+color:white;
+border-radius:8px;
+cursor:pointer;
+text-align:left;
 }
-.level-btn{
-  display:block;
-  width:100%;
-  padding:10px;
-  margin:5px 0;
-  background:#334155;
-  border:none;
-  color:white;
-  border-radius:8px;
-  cursor:pointer;
-  transition:0.3s;
-}
-.level-btn:hover{background:#3b82f6}
-.locked{background:#475569;cursor:not-allowed}
+.sidebar button:hover{background:#3b82f6}
 .main{
-  flex:1;
-  padding:30px;
-  overflow-y:auto;
-  height:100vh;
+flex:1;
+padding:30px;
+overflow:auto;
 }
 .card{
-  background:rgba(255,255,255,0.05);
-  padding:20px;
-  border-radius:15px;
-  margin-bottom:20px;
-  backdrop-filter:blur(10px);
-  animation:fade 0.5s ease;
+background:#111827;
+padding:20px;
+border-radius:15px;
+margin-bottom:20px;
 }
-.quiz{
-  margin-top:15px;
-}
-input{
-  padding:8px;
-  border-radius:6px;
-  border:none;
-  margin-top:5px;
-}
-button{
-  padding:8px 15px;
-  background:#3b82f6;
-  border:none;
-  color:white;
-  border-radius:6px;
-  cursor:pointer;
-  margin-top:5px;
-}
-.progress{
-  height:10px;
-  background:#1e293b;
-  border-radius:5px;
-  margin:15px 0;
-}
-.progress-bar{
-  height:100%;
-  width:0%;
-  background:#3b82f6;
-  border-radius:5px;
-}
-@keyframes fade{
-  from{opacity:0;transform:translateY(10px)}
-  to{opacity:1;transform:translateY(0)}
+.open-editor{
+background:linear-gradient(90deg,#06b6d4,#3b82f6);
+padding:10px 20px;
+border:none;
+border-radius:10px;
+color:white;
+cursor:pointer;
 }
 </style>
 </head>
 <body>
 
 <div class="sidebar">
-  <h2>LearnPy</h2>
-  <button onclick="location.href='testpy.html'">🐍 Python TEST</button>
-  <div class="progress">
-    <div class="progress-bar" id="progressBar"></div>
-  </div>
-  <div id="levels"></div>
+<h2>PythonMaster</h2>
+
+<button onclick="loadLesson(0)">1. Print</button>
+<button onclick="loadLesson(1)">2. Variable</button>
+<button onclick="loadLesson(2)">3. If Else</button>
+<button onclick="loadLesson(3)">4. Loop</button>
+<button onclick="loadLesson(4)">5. Function</button>
+<button onclick="location.href='testpy.html'">🐍 Buka Python Editor</button>
+
 </div>
 
 <div class="main">
-  <h1>Python Learning Path</h1>
-  <div id="content"></div>
+<h1>Materi Python</h1>
+<div id="content"></div>
 </div>
 
 <script>
-let unlocked=0;
-let totalCompleted=0;
-
-const data=[
+const lessons=[
 {
-name:"Dasar",
-lessons:[
-{title:"1. Print",
+title:"Print",
 content:`print() digunakan untuk menampilkan output.
 Contoh:
-print("Hello World")
+print("Halo Dunia")
 
-Semua program Python biasanya menampilkan sesuatu menggunakan print().`,
-quiz:{q:"Fungsi print()?",a:"menampilkan"}},
-{title:"2. Variable",
-content:`Variable adalah tempat menyimpan data.
+Latihan:
+Cetak nama kamu ke layar.`
+},
+{
+title:"Variable",
+content:`Variable menyimpan data.
 x=10
 nama="Budi"
 
-Python tidak perlu deklarasi tipe.`,
-quiz:{q:"Apa itu variable?",a:"menyimpan"}},
-{title:"3. Integer & Float",
-content:`Integer = angka tanpa koma.
-Float = angka desimal.
-x=10
-y=3.14`,
-quiz:{q:"3.14 termasuk?",a:"float"}},
-{title:"4. String",
-content:`String adalah teks.
-nama="Andi"
-Gunakan tanda kutip.`,
-quiz:{q:"Tipe data teks?",a:"string"}},
-{title:"5. Input",
-content:`input() menerima data dari user.
-nama=input("Nama: ")`,
-quiz:{q:"Fungsi input()?",a:"menerima"}}
-]
+Python otomatis menentukan tipe data.`
 },
 {
-name:"Menengah",
-lessons:[
-{title:"1. If Else",
+title:"If Else",
 content:`If digunakan untuk kondisi.
 if x>5:
- print("Besar")`,
-quiz:{q:"Keyword kondisi?",a:"if"}},
-{title:"2. Loop For",
-content:`for digunakan untuk perulangan.
-for i in range(5):
- print(i)`,
-quiz:{q:"Loop menggunakan?",a:"for"}},
-{title:"3. While Loop",
-content:`while berjalan selama kondisi true.`,
-quiz:{q:"Loop kondisi terus menerus?",a:"while"}},
-{title:"4. List",
-content:`List menyimpan banyak data.
-angka=[1,2,3]`,
-quiz:{q:"Tipe data array di python?",a:"list"}},
-{title:"5. Dictionary",
-content:`Dictionary menyimpan key-value.`,
-quiz:{q:"Key-value disebut?",a:"dictionary"}}
-]
+ print("Besar")
+else:
+ print("Kecil")`
 },
 {
-name:"Tinggi",
-lessons:[
-{title:"1. Function",
+title:"Loop",
+content:`For dan While untuk perulangan.
+for i in range(5):
+ print(i)`
+},
+{
+title:"Function",
 content:`Function dibuat dengan def.
 def halo():
- print("Hi")`,
-quiz:{q:"Keyword function?",a:"def"}},
-{title:"2. Return",
-content:`return mengembalikan nilai.`,
-quiz:{q:"Mengembalikan nilai?",a:"return"}},
-{title:"3. Lambda",
-content:`Lambda adalah function singkat.`,
-quiz:{q:"Function singkat?",a:"lambda"}},
-{title:"4. Try Except",
-content:`Menangani error.`,
-quiz:{q:"Menangani error?",a:"except"}},
-{title:"5. File Handling",
-content:`open("file.txt")`,
-quiz:{q:"Membuka file?",a:"open"}}
-]
-},
-{
-name:"Legend",
-lessons:[
-{title:"1. OOP",
-content:`Class dan Object.`,
-quiz:{q:"Blueprint object?",a:"class"}},
-{title:"2. Inheritance",
-content:`Pewarisan class.`,
-quiz:{q:"Turunan class?",a:"inheritance"}},
-{title:"3. Module",
-content:`import module`,
-quiz:{q:"Import file?",a:"import"}},
-{title:"4. Virtual Env",
-content:`Environment terpisah project.`,
-quiz:{q:"Lingkungan terpisah?",a:"environment"}},
-{title:"5. API",
-content:`Mengambil data dari server.`,
-quiz:{q:"Ambil data web?",a:"api"}}
-]
-},
-{
-name:"Professional",
-lessons:[
-{title:"1. Async Await",
-content:`Pemrograman asynchronous.`,
-quiz:{q:"Async keyword?",a:"async"}},
-{title:"2. Multithreading",
-content:`Thread paralel.`,
-quiz:{q:"Thread paralel?",a:"thread"}},
-{title:"3. Django",
-content:`Framework web python.`,
-quiz:{q:"Framework web?",a:"django"}},
-{title:"4. Machine Learning",
-content:`Belajar dari data.`,
-quiz:{q:"Belajar dari data?",a:"machine"}},
-{title:"5. AI",
-content:`Artificial Intelligence.`,
-quiz:{q:"AI singkatan?",a:"artificial"}}
-]
+ print("Hi")`
 }
 ];
 
-function renderLevels(){
-let html="";
-data.forEach((lvl,i)=>{
-html+=`<button class="level-btn ${i>unlocked?"locked":""}"
-${i>unlocked?"disabled":""}
-onclick="openLevel(${i})">${lvl.name}</button>`;
-});
-levels.innerHTML=html;
-}
-
-function openLevel(i){
-let html="";
-data[i].lessons.forEach((les,j)=>{
-html+=`
+function loadLesson(i){
+content.innerHTML=`
 <div class="card">
-<h2>${les.title}</h2>
-<p>${les.content}</p>
-<div class="quiz">
-<p><b>${les.quiz.q}</b></p>
-<input id="ans${i}${j}">
-<button onclick="check(${i},${j})">Submit</button>
-</div>
+<h2>${lessons[i].title}</h2>
+<pre>${lessons[i].content}</pre>
 </div>`;
-});
-content.innerHTML=html;
 }
-
-function check(i,j){
-let ans=document.getElementById("ans"+i+j).value.toLowerCase();
-if(ans.includes(data[i].lessons[j].quiz.a)){
-alert("Correct 🎉");
-totalCompleted++;
-if(j==data[i].lessons.length-1 && i==unlocked){
-unlocked++;
-}
-updateProgress();
-renderLevels();
-}else{
-alert("Wrong ❌");
-}
-}
-
-function updateProgress(){
-let totalLessons=data.reduce((acc,l)=>acc+l.lessons.length,0);
-let percent=(totalCompleted/totalLessons)*100;
-progressBar.style.width=percent+"%";
-}
-
-renderLevels();
 </script>
 
 </body>
