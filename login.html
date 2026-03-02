@@ -1,81 +1,94 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>LearnPy Login</title>
+<title>PythonMaster Login</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Poppins}
 body{
-  font-family:Arial;
-  background:#0f172a;
-  color:white;
+  height:100vh;
   display:flex;
   justify-content:center;
   align-items:center;
-  height:100vh;
+  background:linear-gradient(135deg,#0f172a,#1e1b4b);
+  color:white;
 }
-.box{
-  background:#1e293b;
-  padding:30px;
-  border-radius:10px;
-  width:300px;
+.card{
+  background:#111827;
+  padding:40px;
+  width:380px;
+  border-radius:20px;
+  box-shadow:0 0 40px rgba(0,0,0,0.4);
   text-align:center;
 }
+h1{
+  font-size:28px;
+  margin-bottom:10px;
+}
+p{opacity:.7;margin-bottom:25px}
 input{
   width:100%;
-  padding:10px;
-  margin:10px 0;
+  padding:12px;
+  margin:8px 0;
+  border-radius:10px;
   border:none;
-  border-radius:5px;
+  background:#1f2937;
+  color:white;
 }
 button{
   width:100%;
-  padding:10px;
-  background:#3b82f6;
+  padding:12px;
+  margin-top:15px;
   border:none;
+  border-radius:10px;
+  background:linear-gradient(90deg,#06b6d4,#3b82f6);
   color:white;
-  border-radius:5px;
+  font-weight:bold;
   cursor:pointer;
 }
-span{
-  color:#38bdf8;
+.switch{
+  margin-top:15px;
+  font-size:14px;
   cursor:pointer;
+  color:#38bdf8;
 }
 </style>
 </head>
 <body>
 
-<div class="box">
-<h1>LearnPy</h1>
+<div class="card">
+<h1>PythonMaster</h1>
+<p>Login untuk mulai belajar Python</p>
 
-<div id="login">
-<h3>Login</h3>
+<div id="loginBox">
 <input type="email" id="email" placeholder="Email">
 <input type="password" id="password" placeholder="Password">
 <button onclick="login()">Login</button>
-<p>Don't have Account? <span onclick="showRegister()">Register</span></p>
+<div class="switch" onclick="showRegister()">Belum punya akun? Register</div>
 </div>
 
-<div id="register" style="display:none;">
-<h3>Register</h3>
+<div id="registerBox" style="display:none;">
 <input type="email" id="remail" placeholder="Email">
 <input type="password" id="rpassword" placeholder="Password">
 <button onclick="register()">Register</button>
-<p>Already have Account? <span onclick="showLogin()">Login</span></p>
+<div class="switch" onclick="showLogin()">Sudah punya akun? Login</div>
 </div>
 
 </div>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } 
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword }
 from "https://www.gstatic.com/firebasejs/12.10.0/firebase-auth.js";
 
 const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
+  apiKey: "AIzaSyALUQ4bae2_7tZAkxnDoACxy9phrqEkv-8",
   authDomain: "learnpy-f832a.firebaseapp.com",
   projectId: "learnpy-f832a",
   storageBucket: "learnpy-f832a.firebasestorage.app",
   messagingSenderId: "495153906487",
-  appId: "1:495153906487:web:1fa31590a632b7244390b2"
+  appId: "1:495153906487:web:1fa31590a632b7244390b2",
+  measurementId: "G-6LD448WSS3"
 };
 
 const app = initializeApp(firebaseConfig);
@@ -83,22 +96,22 @@ const auth = getAuth(app);
 
 window.register = function(){
   createUserWithEmailAndPassword(auth,
-  document.getElementById("remail").value,
-  document.getElementById("rpassword").value)
-  .then(()=>window.location="index.html")
+  remail.value,
+  rpassword.value)
+  .then(()=>location.href="index.html")
   .catch(e=>alert(e.message));
 }
 
 window.login = function(){
   signInWithEmailAndPassword(auth,
-  document.getElementById("email").value,
-  document.getElementById("password").value)
-  .then(()=>window.location="index.html")
+  email.value,
+  password.value)
+  .then(()=>location.href="index.html")
   .catch(e=>alert(e.message));
 }
 
-window.showRegister=()=>{login.style.display="none";register.style.display="block";}
-window.showLogin=()=>{register.style.display="none";login.style.display="block";}
+window.showRegister=()=>{loginBox.style.display="none";registerBox.style.display="block";}
+window.showLogin=()=>{registerBox.style.display="none";loginBox.style.display="block";}
 </script>
 
 </body>
