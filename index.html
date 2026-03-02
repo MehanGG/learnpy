@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>LearnPy</title>
+<style>
+body{font-family:Arial;background:#0f172a;color:white;padding:20px}
+button{padding:8px 15px;margin:5px;background:#3b82f6;border:none;color:white;border-radius:5px;cursor:pointer}
+.lock{background:#475569}
+.card{background:#1e293b;padding:15px;border-radius:10px;margin:10px 0}
+.quiz{background:#334155;padding:10px;border-radius:8px}
+</style>
+</head>
+<body>
+
+<h1>LearnPy Dashboard</h1>
+<button onclick="location.href='testpy.html'">🐍 Python TEST</button>
+
+<div id="levels"></div>
+<div id="content"></div>
+
+<script>
+let unlocked=0;
+
+const data=[
+{
+name:"Dasar",
+lessons:[
+{
+title:"Bab 1 - Print",
+content:`print() digunakan untuk menampilkan output ke layar.
+Contoh:
+print("Hello World")`,
+quiz:{
+q:"Apa fungsi print()?",
+a:"menampilkan output"
+}
+},
+{
+title:"Bab 2 - Integer",
+content:`Integer adalah angka tanpa koma.
+Contoh:
+x=10
+print(x)`,
+quiz:{
+q:"10 termasuk tipe apa?",
+a:"integer"
+}
+}
+]
+},
+{
+name:"Menengah",
+lessons:[
+{
+title:"Function",
+content:`Function dibuat dengan def.
+Contoh:
+def halo():
+ print("Hi")`,
+quiz:{
+q:"Keyword membuat function?",
+a:"def"
+}
+}
+]
+}
+];
+
+function renderLevels(){
+let html="";
+data.forEach((lvl,i)=>{
+let lock=i>unlocked?"lock":"";
+html+=`<button class="${lock}" onclick="openLevel(${i})" ${i>unlocked?"disabled":""}>${lvl.name}</button>`;
+});
+levels.innerHTML=html;
+}
+
+function openLevel(i){
+let lvl=data[i];
+let html="";
+lvl.lessons.forEach((les,j)=>{
+html+=`
+<div class="card">
+<h3>${les.title}</h3>
+<p>${les.content}</p>
+
+<div class="quiz">
+<p>${les.quiz.q}</p>
+<input id="ans${j}">
+<button onclick="check(${i},${j})">Submit</button>
+</div>
+</div>`;
+});
+content.innerHTML=html;
+}
+
+function check(i,j){
+let ans=document.getElementById("ans"+j).value.toLowerCase();
+if(ans.includes(data[i].lessons[j].quiz.a)){
+alert("Correct!");
+if(i==unlocked && j==data[i].lessons.length-1){
+unlocked++;
+renderLevels();
+}
+}else{
+alert("Wrong!");
+}
+}
+
+renderLevels();
+</script>
+
+</body>
+</html>
